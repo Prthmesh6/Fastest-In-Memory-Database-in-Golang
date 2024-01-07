@@ -21,6 +21,8 @@ func main() {
 
 	size, _ := reader.ReadByte()
 
+	fmt.Println(size)
+
 	strSize, _ := strconv.ParseInt(string(size), 10, 64)
 
 	// consume /r/n
