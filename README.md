@@ -16,5 +16,7 @@ I always wanted to create a database to understand how the things actually work 
 4) Use "redis-cli" command to run redis client
 5) Now on Redis-cli you can execute the redis commands directly.
 
-## Highlights 
+## Highlights <div id="header" align="center">
+  <img src="https://private-user-images.githubusercontent.com/74038190/238200839-9c351cb9-c9a2-4b20-8420-e96b8331a53b.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MDU4NjA5NzksIm5iZiI6MTcwNTg2MDY3OSwicGF0aCI6Ii83NDAzODE5MC8yMzgyMDA4MzktOWMzNTFjYjktYzlhMi00YjIwLTg0MjAtZTk2YjgzMzFhNTNiLmdpZj9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDAxMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwMTIxVDE4MTExOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRhOTNmMWZiMmE2NzU4ZTI5ZDE4YTAzYTUyNDdjYTk4ODNjODY1NjMwZmViZjQ4MjdkNjJhNWI0MWJhZWU3N2YmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.DIxwRhjMdFvdqxpOAMGmIfo_flae9FCbZtVUNgZjcrc" width="100"/>
+</div>
 
