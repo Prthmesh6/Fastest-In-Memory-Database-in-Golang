@@ -21,3 +21,5 @@ I always wanted to create a database to understand how the things actually work 
 </div>
 
 1) This database works superfast since it is InMemory Database. As it is InMemory, server crash can cause data loss. But as I love to solve such problems I have added logic which avoid data loss
+2) For Parsing UnParsing the data we haven't used JSON, we have used [RESP](https://redis.io/docs/reference/protocol-spec/) that is Redis serialization protocol specification you can read more about it on Redis Website, I have implemented it in code. 
+3) We are storing our data to disk also as we should have backup
