@@ -23,3 +23,75 @@ I always wanted to create a database to understand how the things actually work 
 1) This database works superfast since it is InMemory Database. As it is InMemory, server crash can cause data loss. But as I love to solve such problems I have added logic which avoid data loss, I have implemented [AOF](https://redis.io/docs/management/persistence/)
 2) For Parsing UnParsing the data we haven't used JSON, we have used [RESP](https://redis.io/docs/reference/protocol-spec/) that is Redis serialization protocol specification you can read more about it on Redis Website, I have implemented it in code. 
 3) To be continued...
+
+
+# Redis-like Server Benchmarks
+
+This section shows the performance benchmarks for different operations in our Redis-like server implementation.
+
+## Running the Benchmarks
+
+To run the benchmarks, use:
+
+```bash
+go test -bench=. -benchmem
+```
+
+## Benchmark Results
+
+Below are sample benchmark results showing operations per second, time per operation, and memory usage:
+
+``` 
+BenchmarkPing/Simple_PING-8 10000000 112 ns/op 0 B/op 0 allocs/op
+BenchmarkPing/PING_with_argument-8 8000000 150 ns/op 0 B/op 0 allocs/op
+BenchmarkSetGet/SET-8 5000000 234 ns/op 0 B/op 0 allocs/op
+BenchmarkSetGet/GET-8 8000000 198 ns/op 0 B/op 0 allocs/op
+BenchmarkHash/HSET-8 5000000 234 ns/op 0 B/op 0 allocs/op
+BenchmarkHash/HGET-8 8000000 198 ns/op 0 B/op 0 allocs/op
+BenchmarkHash/HGETALL-8 4000000 325 ns/op 112 B/op 2 allocs/op
+
+```
+
+### Understanding the Results
+
+- **ops/sec**: Higher numbers mean more operations per second (better performance)
+- **ns/op**: Nanoseconds per operation (lower is better)
+- **B/op**: Bytes allocated per operation
+- **allocs/op**: Number of heap allocations per operation
+
+### Benchmark Details
+
+1. **PING Operations**
+   - Simple PING without arguments
+   - PING with custom message
+
+2. **Key-Value Operations**
+   - SET: Setting key-value pairs
+   - GET: Retrieving values by key
+
+3. **Hash Operations**
+   - HSET: Setting hash field-value pairs
+   - HGET: Getting single hash field value
+   - HGETALL: Retrieving all field-value pairs from a hash
+
+## Running Specific Benchmarks
+
+You can run specific benchmark groups using:
+
+bash
+go test -bench=BenchmarkPing -benchmem # Only PING benchmarks
+go test -bench=BenchmarkSetGet -benchmem # Only SET/GET benchmarks
+go test -bench=BenchmarkHash -benchmem # Only hash operations
+
+```
+
+This README section provides:
+1. Instructions for running benchmarks
+2. Sample benchmark results
+3. Explanation of what the numbers mean
+4. Details about each benchmark type
+5. Instructions for running specific benchmark groups
+
+You should replace the sample benchmark numbers with your actual results when you run the benchmarks on your system. The actual performance numbers will vary depending on the hardware and system load.
+
+```
