@@ -13,6 +13,7 @@ I always wanted to create a database to understand how things actually work in b
 1. **High Performance**: Superfast operations since it's an InMemory Database
 2. **Data Persistence**: Implemented [AOF (Append-Only File)](https://redis.io/docs/management/persistence/) to prevent data loss during server crashes
 3. **RESP Protocol**: Uses [Redis Serialization Protocol](https://redis.io/docs/reference/protocol-spec/) for efficient data parsing/unparsing
+4. **Distributed Mode (basic)**: Run multiple nodes; each key is routed to an owner node (Rendezvous hashing). You can connect `redis-cli` to any node.
 
 ## How to Use
 
@@ -24,6 +25,34 @@ I always wanted to create a database to understand how things actually work in b
 4. In the root folder run: `go run .` (Make sure nothing else is running on port 6379)
 5. In the second terminal run: `redis-cli`
 6. Now you can execute Redis commands directly in the CLI
+
+### Distributed / Multi-node usage
+
+Run 3 nodes locally (each node has its own AOF file). Important: for clustering, use explicit host+port (not just `:6379`).
+
+```bash
+go run . -addr "127.0.0.1:6379" -peers "127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381" -aof "node-6379.aof"
+go run . -addr "127.0.0.1:6380" -peers "127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381" -aof "node-6380.aof"
+go run . -addr "127.0.0.1:6381" -peers "127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381" -aof "node-6381.aof"
+```
+
+Connect with `redis-cli` to any node:
+
+```bash
+redis-cli -p 6379
+```
+
+Optional: list nodes from within the CLI:
+
+```bash
+NODES
+```
+
+#### Notes / current limitations
+
+- Ownership is computed from the configured `-peers` list. All nodes should use the same list for consistent routing.
+- There is no replication yet (a key lives on its owner node). Adding replication + failover is the next step.
+- Changing cluster membership will change ownership; data migration/rebalancing is not implemented yet.
 
 ## Performance Benchmarks
 

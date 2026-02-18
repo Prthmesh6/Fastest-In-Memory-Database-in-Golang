@@ -70,9 +70,14 @@ func (r *Resp) Read() (Value, error) {
 		return r.readArray()
 	case BULK:
 		return r.readBulk()
+	case STRING:
+		return r.readString()
+	case ERROR:
+		return r.readError()
+	case INTEGER:
+		return r.readIntegerValue()
 	default:
-		fmt.Printf("Unknown type: %v", string(_type))
-		return Value{}, nil
+		return Value{}, fmt.Errorf("unknown RESP type byte: %q", _type)
 	}
 }
 
@@ -111,6 +116,10 @@ func (r *Resp) readBulk() (Value, error) {
 		return v, err
 	}
 
+	if len == -1 {
+		return Value{typ: "null"}, nil
+	}
+
 	bulk := make([]byte, len)
 
 	r.reader.Read(bulk)
@@ -121,6 +130,30 @@ func (r *Resp) readBulk() (Value, error) {
 	r.readLine()
 
 	return v, nil
+}
+
+func (r *Resp) readString() (Value, error) {
+	line, _, err := r.readLine()
+	if err != nil {
+		return Value{}, err
+	}
+	return Value{typ: "string", str: string(line)}, nil
+}
+
+func (r *Resp) readError() (Value, error) {
+	line, _, err := r.readLine()
+	if err != nil {
+		return Value{}, err
+	}
+	return Value{typ: "error", str: string(line)}, nil
+}
+
+func (r *Resp) readIntegerValue() (Value, error) {
+	x, _, err := r.readInteger()
+	if err != nil {
+		return Value{}, err
+	}
+	return Value{typ: "integer", num: x}, nil
 }
 
 // Marshal Value to bytes
@@ -136,6 +169,8 @@ func (v Value) Marshal() []byte {
 		return v.marshallNull()
 	case "error":
 		return v.marshallError()
+	case "integer":
+		return v.marshalInteger()
 	default:
 		return []byte{}
 	}
@@ -172,6 +207,14 @@ func (v Value) marshalArray() []byte {
 		bytes = append(bytes, v.array[i].Marshal()...)
 	}
 
+	return bytes
+}
+
+func (v Value) marshalInteger() []byte {
+	var bytes []byte
+	bytes = append(bytes, INTEGER)
+	bytes = append(bytes, strconv.Itoa(v.num)...)
+	bytes = append(bytes, '\r', '\n')
 	return bytes
 }
 
